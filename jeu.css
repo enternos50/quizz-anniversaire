@@ -8,6 +8,7 @@ body {
   margin: 0;
   padding: 20px;
   text-align: center;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.2);
 }
 
 h1 {
@@ -43,6 +44,13 @@ h1 {
   font-size: 1em; /* Réduit de 1.1em à 1em */
 }
 
+/* Effet tactile sur les réponses */
+.reponse:active {
+  background: #ffd166;
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
 .reponse:hover {
   background: #ffd166;
   transform: scale(1.03);
@@ -57,6 +65,8 @@ h1 {
 #timer {
   margin-bottom: 10px;
   font-size: 1.3em;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 #progress-container {
@@ -90,7 +100,11 @@ h1 {
   transform: scale(1.05);
 }
 
-
+.btn-final, .btn-accueil, .btn-rejouer {
+  box-shadow: 0 2px 8px rgba(58,134,255,0.15);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
 
 .fade-out {
   opacity: 0;
@@ -285,5 +299,89 @@ h1 {
   .reponse {
     max-width: 400px;
     font-size: 1.2em;
+  }
+}
+
+/* Améliorations pour les mobiles */
+@media screen and (max-width: 480px) {
+  body {
+    padding: 5px;
+    font-size: 1em;
+    background-size: cover;
+  }
+
+  #quiz {
+    padding: 10px;
+    margin: 5px;
+    max-width: 100vw;
+    min-height: calc(100vh - 10px);
+    box-shadow: none;
+    border-radius: 10px;
+  }
+
+  h1 {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+  }
+
+  .question {
+    font-size: 1em;
+    padding: 0 5px;
+  }
+
+  .reponse {
+    padding: 10px;
+    font-size: 0.95em;
+    max-width: 100%;
+    margin: 6px auto;
+    border-radius: 8px;
+  }
+
+  #timer {
+    font-size: 1.1em;
+    margin: 10px 0;
+  }
+
+  #progress-container {
+    height: 16px;
+    margin: 8px 0;
+  }
+
+  .score-final {
+    padding: 10px;
+    margin: 5px;
+    max-width: 100vw;
+  }
+
+  .score-item {
+    padding: 8px;
+    margin: 6px 0;
+    font-size: 0.95em;
+  }
+
+  .buttons-container {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 15px;
+    padding: 0 5px;
+  }
+
+  .btn-final, .btn-accueil, .btn-rejouer {
+    width: 100%;
+    padding: 12px;
+    font-size: 1em;
+    border-radius: 6px;
+  }
+}
+
+/* Fluidité des transitions */
+#quiz, .score-final, .reponse, .btn-final, .btn-accueil, .btn-rejouer {
+  transition: all 0.2s cubic-bezier(.4,0,.2,1);
+}
+
+/* Empêcher le zoom automatique sur mobile */
+@media screen and (max-width: 480px) {
+  html {
+    touch-action: manipulation;
   }
 }

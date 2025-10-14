@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Historique des Scores</title>
+  <link rel="stylesheet" href="scores.css">
+</head>
+<body>
+  <h1>🏆 Historique des Scores</h1>
+
+  <div id="scores-container"></div>
+
+  <button onclick="window.location.href='index.html'">🏠 Retour à l'accueil</button>
+  <button onclick="effacerScores()">🗑️ Effacer l’historique</button>
+
+  <script>
+    function afficherScores() {
+      const conteneur = document.getElementById('scores-container');
+      const resultats = JSON.parse(localStorage.getItem("resultatsTousJoueurs") || "[]");
+
+      if (resultats.length === 0) {
+        conteneur.innerHTML = "<p>Aucun score enregistré pour le moment.</p>";
+        return;
+      }
+
+      conteneur.innerHTML = resultats.map((session, index) => `
+        <div class="score-session">
+          <h2>Partie ${index + 1} — ${session.date}</h2>
+          <p><strong>Thème :</strong> ${session.theme} | <strong>Niveau :</strong> ${session.niveau}</p>
+          <ul>
+            ${session.joueurs
+              .map(j => `<li style="color:${j.couleur}">
+                ${j.nom} : ${j.score} point${j.score > 1 ? "s" : ""}
+              </li>`).join('')}
+          </ul>
+        </div>
+      `).join('');
+    }
+
+    function effacerScores() {
+      if (confirm("Voulez-vous vraiment effacer tous les scores ?")) {
+        localStorage.removeItem("resultatsTousJoueurs");
+        afficherScores();
+      }
+    }
+
+    afficherScores();
+  </script>
+</body>
+</html>
