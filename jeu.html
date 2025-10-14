@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Jeu Quiz</title>
+</head>
+<body>
+  <h1>Quiz</h1>
+  <div id="quiz-container">
+    <p id="question-text"></p>
+    <div id="reponses"></div>
+    <button onclick="questionSuivante()">Suivant</button>
+  </div>
+
+  <script>
+    const toutesLesQuestions = [
+      { question: "Quel langage est utilisé pour styliser une page web ?", reponses: ["HTML", "JavaScript", "Python", "CSS"], bonne: "CSS", niveau: "Facile" },
+      { question: "Quelle est la capitale de la France ?", reponses: ["Paris", "Lyon", "Marseille", "Toulouse"], bonne: "Paris", niveau: "Facile" },
+      { question: "Combien font 3 x 3 ?", reponses: ["6", "9", "12", "33"], bonne: "9", niveau: "Facile" },
+      { question: "Quel est le bon format pour une balise HTML ?", reponses: ["<p>", "[p]", "{p}", "(p)"], bonne: "<p>", niveau: "Facile" },
+      { question: "Quel langage est exécuté côté client ?", reponses: ["PHP", "Java", "JavaScript", "Python"], bonne: "JavaScript", niveau: "Moyen" },
+      { question: "Quelle extension pour une feuille de style ?", reponses: [".html", ".css", ".js", ".exe"], bonne: ".css", niveau: "Moyen" },
+      { question: "2 + '2' donne ?", reponses: ["4", "22", "NaN", "Erreur"], bonne: "22", niveau: "Moyen" },
+      { question: "Comment appeler un tableau JS ?", reponses: ["array", "list", "set", "map"], bonne: "array", niveau: "Moyen" },
+      { question: "Afficher un message dans la console JS ?", reponses: ["console.log()", "alert()", "print()", "message()"], bonne: "console.log()", niveau: "Difficile" },
+      { question: "Quel événement pour un clic bouton ?", reponses: ["onclick", "onpress", "onhover", "onselect"], bonne: "onclick", niveau: "Difficile" },
+      { question: "typeof [] renvoie ?", reponses: ["array", "object", "list", "undefined"], bonne: "object", niveau: "Difficile" }
+    ];
+
+    function tirerQuestionsParNiveau(niveau) {
+      const faciles = toutesLesQuestions.filter(q => q.niveau === "Facile");
+      const moyens = toutesLesQuestions.filter(q => q.niveau === "Moyen");
+      const difficiles = toutesLesQuestions.filter(q => q.niveau === "Difficile");
+      function tirer(liste, n) {
+        return [...liste].sort(() => 0.5 - Math.random()).slice(0, n);
+      }
+      if (niveau === "Facile") return tirer(faciles, 5);
+      if (niveau === "Moyen") return tirer(moyens, 5);
+      if (niveau === "Difficile") return tirer(difficiles, 5);
+      return [...tirer(faciles, 2), ...tirer(moyens, 2), ...tirer(difficiles, 1)];
+    }
+
+    const niveauQuiz = localStorage.getItem("niveauQuiz") || "Mixte";
+    const questions = tirerQuestionsParNiveau(niveauQuiz);
+    let questionActuelle = 0;
+
+    function afficherQuestion() {
+      const q = questions[questionActuelle];
+      document.getElementById("question-text").innerHTML = `${q.question} <span style="font-size:0.8em;color:gray;">[${q.niveau}]</span>`;
+      const conteneur = document.getElementById("reponses");
+      conteneur.innerHTML = "";
+      q.reponses.forEach(r => {
+        const btn = document.createElement("button");
+        btn.textContent = r;
+        btn.onclick = () => verifierReponse(r);
+        conteneur.appendChild(btn);
+      });
+    }
+
+    function verifierReponse(reponse) {
+      const q = questions[questionActuelle];
+      if (reponse === q.bonne) {
+        alert("Bonne réponse !");
+      } else {
+        alert(`Mauvaise réponse. La bonne était : ${q.bonne}`);
+      }
+    }
+
+    function questionSuivante() {
+      questionActuelle++;
+      if (questionActuelle < questions.length) {
+        afficherQuestion();
+      } else {
+        document.getElementById("quiz-container").innerHTML = "<h2>Fin du quiz !</h2>";
+      }
+    }
+
+    afficherQuestion();
+  </script>
+</body>
+</html>
