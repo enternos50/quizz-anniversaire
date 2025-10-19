@@ -85,7 +85,7 @@
     theme: "gabriel",
 },
 {
-    question: "Quel sport est-je pratiqué avant le basket ?",
+    question: "Quel sport ai-je pratiqué avant le basket ?",
     reponses: ["foot", "tennis", "natation", "aqua-poney"],
     bonne: "foot",
     niveau: "Facile",
@@ -149,6 +149,14 @@
   bonne: "jaune",
   niveau: "Moyen",
   theme: "gabriel",
+
+},
+{
+  question: "Quelle appli j’utilise le plus ?",
+  reponses: ["Instagram", "TikTok", "Snapchat", "YouTube"],
+  bonne: "Instagram",
+  niveau: "Moyen",
+  theme: "gabriel",
 },
 
 
@@ -164,6 +172,20 @@
     question: "Quel est mon jeu vidéo préféré actuelle ?",
     reponses: ["fifa" , "minecraft", "NBA2k", "fortnite"],
     bonne: "NBA2k",
+    niveau: "Difficile",
+    theme: "gabriel",
+},
+{
+    question: "Quelle a été mon collège ?",
+    reponses: ["Emile Zola", "Les Provinces", "Le Ferronay", "La Bucaille"], 
+    bonne: "Emile Zola",
+    niveau: "Difficile",
+    theme: "gabriel",
+},
+{
+    question: "Quelle sont les pote que je connais depuis le plus longtemps ?",
+    reponses: ["Alexis et Antonin", "Titouan et eliott", "Nino et Titouan", "Eliott et Nino"],
+    bonne: "Nino et Titouan",
     niveau: "Difficile",
     theme: "gabriel",
 }
@@ -378,7 +400,7 @@ function afficherScoresFinaux() {
     quiz.innerHTML = `
         <div class="score-final">
             <h2>🎮 Quiz terminé ! 🎮</h2>
-            <h3>🏆 Classement final 🏆</h3>
+            <h3>🏆 Classement final (sur 20) 🏆</h3>
             <div class="scores-list">
                 ${joueursTriés.map((joueur, index) => `
                     <div class="score-item ${index === 0 ? 'winner' : ''}">

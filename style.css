@@ -1,182 +1,234 @@
+/* jeu.css - version corrigée et robuste */
+
+/* ---------- Reset léger ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+/* ---------- Police et arrière-plan ---------- */
 body {
-    background-image:url(fond-jeu.png);
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 40px;
-  }
-  
-  h1 {
-    text-align: center;
-    color: #333;
-  }
-  
-  form {
-    background-color: #fff;
-    padding: 20px 30px;
-    border-radius: 10px;
-    max-width: 500px;
-    margin: 0 auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  label {
-    font-weight: bold;
-    display: block;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    color: #444;
-  }
-  
-  select,
-  input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-  }
-  
-  button {
-    margin-top: 20px;
-    width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  input[type="submit"]:hover {
-    background-color: #45a049;
-  }
-  
-  ul {
-    padding-left: 20px;
-  }
-  
-  li {
-    margin: 8px 0;
-  }
-  
- 
-  
-  @media screen and (max-width: 480px) {
-    form {
-      padding: 10px;
-    }
-  
-    h1 {
-      font-size: 20px;
-    }
-
-    
-  }
-
-  @media screen and (max-width: 768px) {
-    body {
-      padding: 20px;
-    }
-
-    form {
-      width: 90%;
-      padding: 15px;
-    }
-
-    select, 
-    input[type="text"] {
-      font-size: 16px; /* Évite le zoom sur iOS */
-    }
-
-    #envoyerBtn {
-      padding: 12px;
-      font-size: 1em;
-    }
-
-    h1 {
-      font-size: 1.8em;
-    }
-
-    h2 {
-      font-size: 1.5em;
-    }
-
-    .theme-buttons {
-      flex-direction: column;
-      gap: 10px;
-      padding: 0 20px;
-    }
-
-    .theme-btn {
-      width: 100%;
-      padding: 12px;
-      font-size: 1em;
-    }
-  }
-
-  h2 {
-    text-align: center;
-  }
-
-  .joueur-block {
-  margin-top: 15px;
-  padding: 10px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
-  animation: fadeIn 0.5s ease;
+  font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(160deg, #0f1724 0%, #1f2937 100%);
+  color: #f8fafc;
+  padding: 18px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-#envoyerBtn {
-  background-color: #ffd166;
-  color: black;
-  font-size: 1.2em;
-  padding: 10px 20px;
+/* ---------- Boutons fixes ---------- */
+.btn-accueil {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 40;
+  background: rgba(255,165,0,0.95);
+  color: #111;
   border: none;
-  border-radius: 15px;
+  padding: 8px 12px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: transform 0.2s, background 0.3s;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
 }
+.btn-accueil:hover { transform: translateY(-2px); }
 
-#envoyerBtn:hover {
-  background-color: #ffa600;
-  transform: scale(1.05);
+/* Musique (créé par JS) - évite chevauchement avec accueil */
+.btn-music {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 40;
+  background: rgba(255,165,0,0.95);
+  color: #111;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
 }
+.btn-music:hover { transform: translateY(-2px); }
 
-.theme-selector {
-  text-align: center;
-  margin: 20px auto;
-  max-width: 600px;
-}
-
-.theme-buttons {
+/* ---------- Conteneur principal (layout) ---------- */
+.app {
+  max-width: 1200px;
+  margin: 70px auto 30px; /* laisse de la place pour boutons fixés */
   display: flex;
   gap: 20px;
+  align-items: flex-start;
   justify-content: center;
-  margin-top: 15px;
+  padding: 12px;
 }
 
-.theme-btn {
-  padding: 15px 25px;
-  border: 2px solid #ffd166;
-  background: white;
+/* ---------- Zone quiz ---------- */
+#quiz {
+  width: 100%;
+  max-width: 720px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+/* petite mise en valeur au survol (utile en desktop) */
+#quiz:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(2,6,23,0.7); }
+
+/* joueur actuel */
+#joueurActuel {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #ffd28a;
+  font-weight: 700;
+}
+
+/* question */
+.question {
+  font-size: 1.25rem;
+  margin-bottom: 14px;
+  color: #fff;
+  line-height: 1.3;
+}
+
+/* réponses - conteneur */
+#reponses {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* style bouton réponse */
+.reponse {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 12px 14px;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 1.1em;
-  transition: all 0.3s ease;
+  text-align: center;
+  font-weight: 600;
+  user-select: none;
+  transition: transform 0.12s ease, background 0.12s ease;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.reponse:hover { transform: translateY(-3px); background: rgba(255,255,255,0.07); }
+
+/* état activé / désactivé (après clic, ton JS retire l'onclick) */
+.reponse[aria-disabled="true"] { opacity: 0.7; cursor: default; transform: none; }
+
+/* résultat */
+#resultat {
+  margin-top: 10px;
+  font-size: 1.05rem;
+  min-height: 28px;
 }
 
-.theme-btn.active {
-  background: #ffd166;
-  transform: scale(1.05);
+/* barre de progression et timer */
+#progress-container {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  height: 14px;
+  overflow: hidden;
+  margin: 10px 0 8px 0;
+  border: 1px solid rgba(0,0,0,0.2);
+}
+#progress-bar {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #34d399, #f59e0b, #ef4444);
+  transition: width 0.5s linear, background-color 0.3s ease;
 }
 
-.theme-btn:hover {
-  background: #fff3d4;
+/* timer texte */
+#timer { font-weight: 700; color: #ffd28a; margin-bottom: 6px; }
+
+/* ---------- Sidebar de scores ---------- */
+#scoreSidebar {
+  width: 320px;
+  max-width: 32%;
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 8px 24px rgba(2,6,23,0.6);
+  position: sticky;
+  top: 90px;
+  align-self: start;
+}
+
+#scoreSidebar h2 { margin-bottom: 8px; font-size: 1.1rem; color: #fff; }
+#joueursInfos { display: flex; flex-direction: column; gap: 8px; }
+
+/* joueur dans la sidebar (ton JS crée des <p class="joueur">) */
+.joueur {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  background: rgba(0,0,0,0.25);
+  border-radius: 8px;
+  font-weight: 600;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* ---------- Score final (page fin de quiz) ---------- */
+.score-final { text-align: center; padding: 6px; }
+.scores-list { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.score-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.score-item.winner { border: 2px solid gold; background: rgba(255,215,0,0.08); }
+
+/* boutons finaux */
+.btn-final {
+  background: linear-gradient(180deg, #ffb347, #ff7b00);
+  border: none;
+  padding: 10px 14px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-weight: 700;
+  color: #111;
+  margin: 8px;
+}
+
+/* ---------- petites images / pub container ---------- */
+.pub-container { margin-top: 16px; text-align: center; font-size: 0.95rem; }
+.pub-logo { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; vertical-align: middle; margin-right: 8px; }
+
+/* ---------- Animations d'entrée/sortie ---------- */
+.fade-in { animation: fadeIn 280ms ease-out both; }
+.fade-out { animation: fadeOut 220ms ease-in both; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-6px) scale(0.995); }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 980px) {
+  .app { flex-direction: column-reverse; align-items: stretch; gap: 18px; margin-top: 70px; }
+  #scoreSidebar { max-width: 100%; width: 100%; position: relative; top: auto; }
+  #quiz { max-width: 100%; }
+  #reponses { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  body { padding: 12px; }
+  .btn-accueil, .btn-music { padding: 8px; font-size: 0.9rem; }
+  .question { font-size: 1.05rem; }
+  .reponse { padding: 10px; font-size: 0.95rem; min-height: 44px; }
 }
