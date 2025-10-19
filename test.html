@@ -18,10 +18,9 @@
 
 
   <div id="quiz">
-  <div id="joueurActuel"></div>
-  <div id="question-compteur" style="margin-bottom:8px; font-weight:600; color:#3a86ff;"></div>
-  <div class="question" id="question-text"></div>
-  <div id="reponses"></div>
+    <div id="joueurActuel"></div>
+    <div class="question" id="question-text"></div>
+    <div id="reponses"></div>
     <div id="progress-container" style="width: 100%; background-color: #ede4e4; height: 20px; border-radius: 10px; overflow: hidden; margin-bottom: 10px;">
   <div id="progress-bar" style="height: 100%; width: 100%; background-color: darkorange; transition: width 1s linear;"></div>
 </div>
@@ -42,8 +41,6 @@
 
 
   <script>
-
-    
 
     
 
@@ -94,9 +91,31 @@
     niveau: "Facile",
     theme: "gabriel",
 },
+{
+  question: "quel est le prénom de mon frére ?",
+  reponses: ["romain", "jsp", "robin", "robinou"],
+  bonne: "robin",
+  niveau: "Facile",
+  theme: "gabriel",
+},
+{
+    question: "Quel est ma boisson préférée ?",
+    reponses: ["coca", "orangina", "fanta", "ice tea"],
+    bonne: "coca",
+    niveau: "Moyen",
+    theme: "gabriel",
+},
 
 
 
+
+
+{
+    question: "Dans quelle ville suis-je né ?",
+    reponses: ["Paris", "Cherbourg", "Marseille", "Tourlaville"],
+    bonne: "Cherbourg",
+    niveau: "Moyen",
+},
 {
     question: "J'ai visiter combien de pays ?",
     reponses: ["3", "2", "5", "1"],
@@ -161,7 +180,7 @@
 
 
 let timerInterval;
-let tempsRestant = 20; // secondes par question
+let tempsRestant = 15; // secondes par question
 
 // Fonction pour tirer X questions aléatoires de chaque niveau
 function tirerQuestionsSelonNiveau() {
@@ -186,19 +205,19 @@ function tirerQuestionsSelonNiveau() {
     // Sélection selon le niveau
     switch(niveauQuiz) {
         case "Facile":
-            questionsSelectionnees = melanger(faciles).slice(0, 10);
+            questionsSelectionnees = melanger(faciles).slice(0, 20);
             break;
         case "Moyen":
-            questionsSelectionnees = melanger(moyens).slice(0, 10);
+            questionsSelectionnees = melanger(moyens).slice(0, 20);
             break;
         case "Difficile":
-            questionsSelectionnees = melanger(difficiles).slice(0, 10);
+            questionsSelectionnees = melanger(difficiles).slice(0, 20);
             break;
         default: // Mixte
             questionsSelectionnees = [
-                ...melanger(faciles).slice(0, 4),
-                ...melanger(moyens).slice(0, 4),
-                ...melanger(difficiles).slice(0, 2)
+                ...melanger(faciles).slice(0, 7),
+                ...melanger(moyens).slice(0, 7),
+                ...melanger(difficiles).slice(0, 6)
             ];
     }
 
@@ -275,15 +294,11 @@ const questions = tirerQuestionsSelonNiveau();
     document.getElementById("resultat").textContent = "";
 
     // Démarre le timer
-    tempsRestant = 20;
+    tempsRestant = 15;
     document.getElementById("timer").textContent = `Temps restant : ${tempsRestant} sec`;
     document.getElementById("progress-bar").style.width = "100%";
 
     clearInterval(timerInterval); // stoppe le timer précédent
-
-    // Ajout du compteur de question
-    document.getElementById("question-compteur").textContent =
-    `Question ${questionIndex + 1} sur ${questions.length}`;
 
     quiz.classList.remove("fade-out");
     quiz.classList.add("fade-in");
@@ -293,7 +308,7 @@ const questions = tirerQuestionsSelonNiveau();
       document.getElementById("timer").textContent = `Temps restant : ${tempsRestant} sec`;
 
       // Met à jour la barre de progression
-      const pourcentage = (tempsRestant / 20) * 100;
+      const pourcentage = (tempsRestant / 15) * 100;
       const progressBar = document.getElementById("progress-bar");
       progressBar.style.width = `${pourcentage}%`;
 
@@ -388,8 +403,6 @@ function afficherScoresFinaux() {
 
         </div>
     `;
-
-    
 }
 
 function rejouer() {
