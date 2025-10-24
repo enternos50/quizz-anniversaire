@@ -4,7 +4,7 @@
   <link rel="stylesheet" href="jeu.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz STI-ZHEIMER</title>
+  <title>Quiz Anniversaire</title>
   
    
 </head>
@@ -33,10 +33,7 @@
     <div id="joueursInfos"></div>
   </aside>
 
-  <audio id="bgMusic" autoplay loop>
-    <source src="chanson jeu.mp3" type="audio/mpeg">
-    Ton navigateur ne supporte pas l'audio HTML5.
-</audio>
+ 
 
 
 
@@ -104,6 +101,12 @@
     bonne: "coca",
     niveau: "Moyen",
     theme: "gabriel",
+},
+{
+    question: "J'ai déja pris une photo avec un ancien joueur NBA ?",
+    reponses: ["oui", "non", ],
+    bonne: "oui",
+    niveau: "Moyen",
 },
 
 
@@ -176,7 +179,7 @@
     theme: "gabriel",
 },
 {
-    question: "Quelle a été mon collège ?",
+    question: "Jétais dans quel collège ?",
     reponses: ["Emile Zola", "Les Provinces", "Le Ferronay", "La Bucaille"], 
     bonne: "Emile Zola",
     niveau: "Difficile",
@@ -186,6 +189,13 @@
     question: "Quelle sont les pote que je connais depuis le plus longtemps ?",
     reponses: ["Alexis et Antonin", "Titouan et eliott", "Nino et Titouan", "Eliott et Nino"],
     bonne: "Nino et Titouan",
+    niveau: "Difficile",
+    theme: "gabriel",
+},
+{
+    question: "Quel a été mon premier voyage à l'étranger ?",
+    reponses: ["Espagne", "Croatie", "Maroc", "Grèce"],
+    bonne: "Maroc",
     niveau: "Difficile",
     theme: "gabriel",
 }
@@ -448,17 +458,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let isMusicPlaying = false;
     
-    musicBtn.onclick = function() {
-        if (isMusicPlaying) {
-            bgMusic.pause();
-            musicBtn.innerHTML = '🔇 Musique';
-        } else {
-            bgMusic.play();
-            musicBtn.innerHTML = '🎵 Musique';
-        }
-        isMusicPlaying = !isMusicPlaying;
-    };
-    
+   
     document.body.insertBefore(musicBtn, document.body.firstChild);
 });
 

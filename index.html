@@ -12,6 +12,26 @@
 <body>
   <h1>Qui me connaît le mieux ?</h1>
 
+  <!-- Règles du jeu (insérer ici) -->
+  <section id="regles-container" style="max-width:900px;margin:12px auto 20px;text-align:left;">
+    <button id="toggleRegles" style="background:#2563eb;color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:700;">
+      Voir les règles
+    </button>
+
+    <div id="regles" style="display:none;margin-top:12px;background:#fff;border-radius:12px;padding:16px;box-shadow:0 8px 20px rgba(0,0,0,0.06);">
+      <h2 style="margin-top:0;font-size:1.1rem;">Règles</h2>
+      <ul style="margin:8px 0 0 18px;color:#111;line-height:1.5;">
+        <li>Chaque partie contient jusqu'à 20 questions.</li>
+        <li>Temps par question : 15 secondes. Après le temps, la question est considérée ratée.</li>
+        <li>Chaque bonne réponse rapporte 1 point.</li>
+        <li>Choisissez votre nom et une couleur unique avant de démarrer.</li>
+        <li>À la fin, votre score est affiché "sur 20".</li>
+        <li>A la fin de la partie, noter votre nom avec votre score sur la feuille </li>
+      </ul>
+      
+    </div>
+  </section>
+
   <div style="text-align: center;">
     <img src="IMG_20240625_201643.jpg" alt="logo STI-ZHEIMER" style="width: 20%; height: 20%;">
   </div>
@@ -155,6 +175,18 @@
       localStorage.setItem("themeQuiz", theme);
 
       window.location.href = "test.html";
+    });
+
+    // bascule affichage règles
+    document.addEventListener('DOMContentLoaded', function(){
+      const btn = document.getElementById('toggleRegles');
+      const regles = document.getElementById('regles');
+      if (!btn || !regles) return;
+      btn.addEventListener('click', () => {
+        const visible = regles.style.display !== 'none';
+        regles.style.display = visible ? 'none' : 'block';
+        btn.textContent = visible ? 'Voir les règles' : 'Masquer les règles';
+      });
     });
   </script>
 </body>
