@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>STI-ZHEIMER</title>
+  <link rel="stylesheet" href="projet.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="logo-sz.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <h1>Qui me connaît le mieux ?</h1>
+
+  <!-- Règles du jeu (insérer ici) -->
+  <section id="regles-container" style="max-width:900px;margin:12px auto 20px;text-align:left;">
+    <button id="toggleRegles" style="background:#2563eb;color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:700;">
+      Voir les règles
+    </button>
+
+    <div id="regles" style="display:none;margin-top:12px;background:#fff;border-radius:12px;padding:16px;box-shadow:0 8px 20px rgba(0,0,0,0.06);">
+      <h2 style="margin-top:0;font-size:1.1rem;">Règles</h2>
+      <ul style="margin:8px 0 0 18px;color:#111;line-height:1.5;">
+        <li>Chaque partie contient jusqu'à 20 questions.</li>
+        <li>Temps par question : 15 secondes. Après le temps, la question est considérée ratée.</li>
+        <li>Chaque bonne réponse rapporte 1 point.</li>
+        <li>Choisissez votre nom et une couleur unique avant de démarrer.</li>
+        <li>À la fin, votre score est affiché "sur 20".</li>
+        <li>A la fin de la partie, noter votre nom avec votre score sur la feuille </li>
+      </ul>
+      
+    </div>
+  </section>
+
+  <div style="text-align: center;">
+    <img src="IMG_20240625_201643.jpg" alt="logo STI-ZHEIMER" style="width: 20%; height: 20%;">
+  </div>
+
+  <h2>Choix de joueurs</h2>
+
+  <!-- Formulaire de configuration du jeu -->
+  <form id="formJoueurs">
+    <label for="joueurs">Nombre de joueurs :</label>
+    <select id="joueurs" name="joueurs" required onchange="afficherChamps()">
+      <option value="">--Choisir--</option>
+      <option value="1">1 joueur</option>
+    </select>
+
+    <!-- Champs générés dynamiquement -->
+    <div id="champsJoueurs"></div>
+
+    <label for="niveau">Niveau de difficulté :</label>
+    <select id="niveau" name="niveau" required>
+      <option value="">--Choisir--</option>
+      <option value="Mixte">Mixte (tous niveaux)</option>
+    </select>
+
+    <label for="themeSelect">Choisis un thème :</label>
+    <select id="themeSelect" name="themeSelect" required>
+      <option value="">--Choisir--</option>
+      <option value="gabriel">Gabriel</option>
+    </select>
+
+    <div id="erreurs" style="color: red; font-weight: bold; margin: 10px 0;"></div>
+
+    <button id="envoyerBtn" type="button">Envoyer</button>
+  </form>
+
+  <script>
+    // Affiche les champs pour les joueurs
+    function afficherChamps() {
+      const nombre = parseInt(document.getElementById("joueurs").value);
+      const conteneur = document.getElementById("champsJoueurs");
+      conteneur.innerHTML = "";
+
+      const couleurs = [
+        { nom: "Rouge", valeur: "#ff0000" },
+        { nom: "Bleu", valeur: "#0000ff" },
+        { nom: "Vert", valeur: "#00ff00" },
+        { nom: "Jaune", valeur: "#DAA520" },
+        { nom: "Rose", valeur: "#ff69b4" },
+        
+      ];
+
+      for (let i = 1; i <= nombre; i++) {
+        conteneur.innerHTML += `
+          <div class="joueur-block">
+            <label>Nom du joueur ${i} :</label>
+            <input type="text" name="joueur${i}" required>
+            <label>Couleur du joueur ${i} :</label>
+            <select name="couleur${i}" required onchange="mettreAJourOptionsCouleurs()">
+              <option value="">--Choisir--</option>
+              ${couleurs.map(c => `<option value="${c.valeur}" style="color:${c.valeur}">${c.nom}</option>`).join('')}
+            </select>
+          </div>
+        `;
+      }
+
+      setTimeout(mettreAJourOptionsCouleurs, 50);
+    }
+
+    // Désactive les couleurs déjà prises
+    function mettreAJourOptionsCouleurs() {
+      const selects = document.querySelectorAll("select[name^='couleur']");
+      const couleursChoisies = Array.from(selects)
+        .map(s => s.value)
+        .filter(val => val !== "");
+
+      selects.forEach(select => {
+        const options = select.querySelectorAll("option");
+        options.forEach(option => {
+          if (option.value !== "" && couleursChoisies.includes(option.value) && option.value !== select.value) {
+            option.disabled = true;
+            option.style.opacity = 0.5;
+          } else {
+            option.disabled = false;
+            option.style.opacity = 1;
+          }
+        });
+      });
+    }
+
+    // Enregistrement des infos et redirection
+    document.getElementById("envoyerBtn").addEventListener("click", function () {
+      const form = document.getElementById("formJoueurs");
+      const erreursDiv = document.getElementById("erreurs");
+      erreursDiv.innerHTML = "";
+
+      const data = new FormData(form);
+      const nbJoueurs = parseInt(data.get("joueurs"));
+
+      if (!nbJoueurs || nbJoueurs < 1 || nbJoueurs > 4) {
+        erreursDiv.textContent = "Veuillez sélectionner un nombre de joueurs.";
+        return;
+      }
+
+      const joueurs = [];
+      const couleursUtilisées = new Set();
+
+      for (let i = 1; i <= nbJoueurs; i++) {
+        const nom = data.get("joueur" + i)?.trim();
+        const couleur = data.get("couleur" + i);
+
+        if (!nom) {
+          erreursDiv.textContent = `Le nom du joueur ${i} est requis.`;
+          return;
+        }
+        if (!couleur) {
+          erreursDiv.textContent = `Le joueur ${i} doit choisir une couleur.`;
+          return;
+        }
+        if (couleursUtilisées.has(couleur)) {
+          erreursDiv.textContent = `La couleur du joueur ${i} est déjà utilisée.`;
+          return;
+        }
+
+        couleursUtilisées.add(couleur);
+        joueurs.push({ nom, couleur });
+      }
+
+      const niveau = data.get("niveau");
+      const theme = data.get("themeSelect");
+
+      if (!niveau) {
+        erreursDiv.textContent = "Veuillez sélectionner un niveau.";
+        return;
+      }
+      if (!theme) {
+        erreursDiv.textContent = "Veuillez sélectionner un thème.";
+        return;
+      }
+
+      localStorage.setItem("joueurs", JSON.stringify(joueurs));
+      localStorage.setItem("niveauQuiz", niveau);
+      localStorage.setItem("themeQuiz", theme);
+
+      window.location.href = "test.html";
+    });
+
+    // bascule affichage règles
+    document.addEventListener('DOMContentLoaded', function(){
+      const btn = document.getElementById('toggleRegles');
+      const regles = document.getElementById('regles');
+      if (!btn || !regles) return;
+      btn.addEventListener('click', () => {
+        const visible = regles.style.display !== 'none';
+        regles.style.display = visible ? 'none' : 'block';
+        btn.textContent = visible ? 'Voir les règles' : 'Masquer les règles';
+      });
+    });
+  </script>
+</body>
+</html>
