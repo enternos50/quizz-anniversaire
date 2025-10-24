@@ -287,3 +287,25 @@ h1 {
     font-size: 1.2em;
   }
 }
+
+/* Styles spécifiques pour les petits écrans (mobile) */
+@media (max-width:720px){
+  /* Centrage de la barre de progression et du timer sur petits écrans */
+  .header-row { align-items: center; gap: 8px; }
+  /* Si vous utilisez une .progress-wrap, elle sera centrée ; sinon on cible l'id */
+  .progress-wrap, #progress-container { 
+    width: 100% !important;
+    max-width: 100%;
+    margin: 6px auto;
+    display: block;
+  }
+  /* Timer centré et occupe la largeur disponible */
+  #timer {
+    text-align: center !important;
+    width: 100% !important;
+    margin: 6px auto 0;
+  }
+  /* Réduire légèrement la hauteur de la barre pour mobile */
+  #progress-container { height: 14px; border-radius: 10px; }
+  #progress-bar { transition: width .35s linear; }
+}

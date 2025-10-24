@@ -212,7 +212,7 @@
 
 
 let timerInterval;
-let tempsRestant = 15; // secondes par question
+let tempsRestant = 20; // secondes par question
 
 // Fonction pour tirer X questions aléatoires de chaque niveau
 function tirerQuestionsSelonNiveau() {
@@ -326,7 +326,7 @@ const questions = tirerQuestionsSelonNiveau();
     document.getElementById("resultat").textContent = "";
 
     // Démarre le timer
-    tempsRestant = 15;
+    tempsRestant = 20;
     document.getElementById("timer").textContent = `Temps restant : ${tempsRestant} sec`;
     document.getElementById("progress-bar").style.width = "100%";
 
@@ -340,7 +340,7 @@ const questions = tirerQuestionsSelonNiveau();
       document.getElementById("timer").textContent = `Temps restant : ${tempsRestant} sec`;
 
       // Met à jour la barre de progression
-      const pourcentage = (tempsRestant / 15) * 100;
+      const pourcentage = (tempsRestant / 20) * 100;
       const progressBar = document.getElementById("progress-bar");
       progressBar.style.width = `${pourcentage}%`;
 
