@@ -53,11 +53,11 @@
 
 
 {
-    question: "Quel est le prénom du créateur de ce quiz ?",
-    reponses: ["gabriel", "gab", "gaby", "gaby le bg"],
-    bonne: "gabriel",
-    niveau: "Facile",
-    theme: "gabriel",
+  question: "Quel est le prénom du créateur de ce quiz ?",
+  reponses: ["gabriel", "gab", "je ne sais pas", "gaby"],
+  bonne: ["gabriel", "gab", "gaby"], // <- plusieurs réponses acceptées
+  niveau: "Facile",
+  theme: "gabriel",
 },
 {
     question: "j'ai quel âge ?",
@@ -91,7 +91,7 @@
 {
   question: "quel est le prénom de mon frére ?",
   reponses: ["romain", "jsp", "robin", "robinou"],
-  bonne: "robin",
+  bonne: ["robin", "robinou"],
   niveau: "Facile",
   theme: "gabriel",
 },
@@ -120,7 +120,7 @@
     niveau: "Moyen",
 },
 {
-    question: "J'ai visiter combien de pays ?",
+    question: "J'ai visiter combien de pays  ?",
     reponses: ["3", "2", "5", "1"],
     bonne: "3",
     niveau: "Moyen",
@@ -370,22 +370,56 @@ function verifier(reponse) {
   });
 
   const questionActuelle = questions[questionIndex];
-  // Prendre en compte les deux formats possibles de bonne réponse
   const bonne = questionActuelle.bonne || questionActuelle.bonneReponse;
   const joueur = joueurs[joueurIndex];
   const resultat = document.getElementById("resultat");
 
-  if (reponse === bonne) {
-    joueur.score++;
-    resultat.innerHTML = `Bonne réponse ! ✅`;
-    resultat.style.color = "green";
-    
-  } else if (reponse === null) {
-    resultat.textContent = `⏱️ Temps écoulé ! La bonne réponse était : ${bonne}`;
+  const normalize = v => String(v).toLowerCase().trim();
+
+  // cas timeout
+  if (reponse === null) {
+    const bonnesAff = Array.isArray(bonne) ? bonne.join(", ") : bonne;
+    resultat.textContent = `⏱️ Temps écoulé ! La bonne réponse était : ${bonnesAff}`;
     resultat.style.color = "orange";
   } else {
-    resultat.textContent = `Mauvaise réponse ❌ La bonne réponse était : ${bonne}`;
-    resultat.style.color = "red";
+    // si "bonne" est un tableau => accepter n'importe quel alias dedans
+    if (Array.isArray(bonne)) {
+      const bonneSet = new Set(bonne.map(normalize));
+      const userAns = normalize(reponse);
+
+      if (bonneSet.has(userAns)) {
+        joueur.score++;
+        resultat.innerHTML = `Bonne réponse ! ✅`;
+        resultat.style.color = "green";
+        document.querySelectorAll('.reponse').forEach(btn => {
+          if (normalize(btn.textContent) === userAns) btn.classList.add('correct');
+        });
+      } else {
+        resultat.textContent = `Mauvaise réponse ❌ La bonne(s) réponse(s) : ${bonne.join(", ")}`;
+        resultat.style.color = "red";
+        document.querySelectorAll('.reponse').forEach(btn => {
+          if (bonneSet.has(normalize(btn.textContent))) btn.classList.add('correct');
+          if (normalize(btn.textContent) === userAns) btn.classList.add('wrong');
+        });
+      }
+    } else {
+      // comportement single-answer existant
+      const userAns = normalize(reponse);
+      const bonneStr = normalize(bonne);
+      document.querySelectorAll('.reponse').forEach(btn => {
+        const val = normalize(btn.textContent);
+        if (val === bonneStr) btn.classList.add('correct');
+        if (val === userAns && val !== bonneStr) btn.classList.add('wrong');
+      });
+      if (userAns === bonneStr) {
+        joueur.score++;
+        resultat.innerHTML = `Bonne réponse ! ✅`;
+        resultat.style.color = "green";
+      } else {
+        resultat.textContent = `Mauvaise réponse ❌ La bonne réponse était : ${bonne}`;
+        resultat.style.color = "red";
+      }
+    }
   }
 
   questionIndex++;
@@ -393,11 +427,11 @@ function verifier(reponse) {
 
   setTimeout(() => {
     if (questionIndex >= questions.length) {
-        afficherScoresFinaux();
+      afficherScoresFinaux();
     } else {
-        afficherQuestion();
+      afficherQuestion();
     }
-}, 2000); // Délai de 2 secondes avant la prochaine question ou les scores
+  }, 2000);
 }
 
 function afficherScoresFinaux() {
