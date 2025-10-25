@@ -120,9 +120,9 @@
     niveau: "Moyen",
 },
 {
-    question: "J'ai visiter combien de pays  ?",
-    reponses: ["3", "2", "5", "1"],
-    bonne: "3",
+    question: "Combien j'ai fait de voyage nécéssitant de prendre l'avion ?",
+    reponses: ["3", "2", "5", "4"],
+    bonne: "5",
     niveau: "Moyen",
 },
 {
@@ -425,13 +425,14 @@ function verifier(reponse) {
   questionIndex++;
   joueurIndex = (joueurIndex + 1) % joueurs.length;
 
+  // délai avant la question suivante (augmenté pour laisser plus de temps pour voir le résultat)
   setTimeout(() => {
     if (questionIndex >= questions.length) {
       afficherScoresFinaux();
     } else {
       afficherQuestion();
     }
-  }, 2000);
+  }, 3500); // <-- anciennement 2000
 }
 
 function afficherScoresFinaux() {
